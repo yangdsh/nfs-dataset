@@ -22,7 +22,7 @@ request = pc.makeRequestRSpec()
 
 # Only Ubuntu images supported.
 imageList = [
-    ('urn:publicid:IDN+clemson.cloudlab.us:cops-pg0+stdataset+webcachesim_short_term_256GB', 'WEBCACHESIM_SNAPSHOT'),
+    ('urn:publicid:IDN+clemson.cloudlab.us+image+cops-PG0:webcachesim_simulation:1', 'WEBCACHESIM_SNAPSHOT'),
     ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU18-64-STD', 'UBUNTU 18.04'),
     ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU16-64-STD', 'UBUNTU 16.04'),
     ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU14-64-STD', 'UBUNTU 14.04'),
