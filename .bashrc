@@ -116,4 +116,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export WEBCACHESIM=/tmp
+export PATH=$PATH:/proj/cops-PG0/workspaces/zhenyus/webcachesim/build/bin
+export WEBCACHESIM_TRACE_DIR=/nfs
+export WEBCACHESIM_ROOT=/proj/cops-PG0/workspaces/zhenyus/webcachesim
