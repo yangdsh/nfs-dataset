@@ -22,6 +22,7 @@ request = pc.makeRequestRSpec()
 
 # Only Ubuntu images supported.
 imageList = [
+    ('urn:publicid:IDN+clemson.cloudlab.us:cops-pg0+stdataset+webcachesim_short_term_256GB', 'WEBCACHESIM_SNAPSHOT'),
     ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU18-64-STD', 'UBUNTU 18.04'),
     ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU16-64-STD', 'UBUNTU 16.04'),
     ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU14-64-STD', 'UBUNTU 14.04'),
@@ -39,7 +40,11 @@ pc.defineParameter("clientCount", "Number of NFS clients",
 
 pc.defineParameter("osImage", "Select OS image",
                    portal.ParameterType.IMAGE,
-                   imageList[2], imageList)
+                   imageList[0], imageList)
+
+pc.defineParameter("DATASET", "URN of your dataset dataset", 
+                   portal.ParameterType.STRING,
+                   "urn:publicid:IDN+clemson.cloudlab.us:cops-pg0+stdataset+webcachesim_short_term_256GB")
 
 # Always need this when using parameters
 params = pc.bindParameters()
@@ -60,7 +65,7 @@ nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repos
 
 # Special node that represents the ISCSI device where the dataset resides
 dsnode = request.RemoteBlockstore("dsnode", nfsDirectory)
-dsnode.dataset = "urn:publicid:IDN+clemson.cloudlab.us:cops-pg0+stdataset+tmp-shared-datasets"
+dsnode.dataset = params.DATASET
 
 # Link between the nfsServer and the ISCSI device that holds the dataset
 dslink = request.Link("dslink")
