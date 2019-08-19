@@ -66,7 +66,7 @@ nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repos
 # Special node that represents the ISCSI device where the dataset resides
 dsnode = request.RemoteBlockstore("dsnode", nfsDirectory)
 dsnode.dataset = params.DATASET
-
+[
 # Link between the nfsServer and the ISCSI device that holds the dataset
 dslink = request.Link("dslink")
 dslink.addInterface(dsnode.interface)
@@ -83,6 +83,7 @@ for i in range(1, params.clientCount+1):
     nfsLan.addInterface(node.addInterface())
     # Initialization script for the clients
     node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
+    node.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/zhenyus/"))
     pass
 
 # Print the RSpec to the enclosing page.
