@@ -8,6 +8,9 @@ case $- in
       *) return;;
 esac
 
+export PATH=$PATH:/proj/cops-PG0/workspaces/zhenyus/webcachesim/build/bin
+export WEBCACHESIM_TRACE_DIR=/nfs
+export WEBCACHESIM_ROOT=/proj/cops-PG0/workspaces/zhenyus/webcachesim
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -116,6 +119,4 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export PATH=$PATH:/proj/cops-PG0/workspaces/zhenyus/webcachesim/build/bin
-export WEBCACHESIM_TRACE_DIR=/nfs
-export WEBCACHESIM_ROOT=/proj/cops-PG0/workspaces/zhenyus/webcachesim
+
