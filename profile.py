@@ -20,14 +20,14 @@ pc = portal.Context()
 # Create a Request object to start building the RSpec.
 request = pc.makeRequestRSpec()
 
-# Only Ubuntu images supported.
-imageList = [
-    ('urn:publicid:IDN+clemson.cloudlab.us+image+cops-PG0:webcachesim_simulation:1', 'WEBCACHESIM_SNAPSHOT'),
-    ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU18-64-STD', 'UBUNTU 18.04'),
-    ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU16-64-STD', 'UBUNTU 16.04'),
-    ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU14-64-STD', 'UBUNTU 14.04'),
-    ('urn:publicid:IDN+emulab.net+image+emulab-ops//CENTOS7-64-STD', 'CENTOS 7'),
-]
+# # Only Ubuntu images supported.
+# imageList = [
+#     ('urn:publicid:IDN+clemson.cloudlab.us+image+cops-PG0:webcachesim_simulation:1', 'WEBCACHESIM_SNAPSHOT'),
+#     ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU18-64-STD', 'UBUNTU 18.04'),
+#     ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU16-64-STD', 'UBUNTU 16.04'),
+#     ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU14-64-STD', 'UBUNTU 14.04'),
+#     ('urn:publicid:IDN+emulab.net+image+emulab-ops//CENTOS7-64-STD', 'CENTOS 7'),
+# ]
 
 # Do not change these unless you change the setup scripts too.
 nfsServerName = "nfs"
@@ -38,9 +38,13 @@ nfsDirectory  = "/nfs"
 pc.defineParameter("clientCount", "Number of NFS clients",
                    portal.ParameterType.INTEGER, 2)
 
-pc.defineParameter("osImage", "Select OS image",
-                   portal.ParameterType.IMAGE,
-                   imageList[0], imageList)
+# pc.defineParameter("osImage", "Select OS image",
+#                    portal.ParameterType.IMAGE,
+#                    imageList[0], imageList)
+pc.defineParameter("osImage", "URN of your OS image", 
+                   portal.ParameterType.STRING,
+                   "urn:publicid:IDN+clemson.cloudlab.us+image+cops-PG0:webcachesim_simulation:1")
+
 
 pc.defineParameter("DATASET", "URN of your dataset dataset", 
                    portal.ParameterType.STRING,
@@ -82,8 +86,8 @@ for i in range(1, params.clientCount+1):
     node.disk_image = params.osImage
     nfsLan.addInterface(node.addInterface())
     # Initialization script for the clients
-    node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
-    node.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/zhenyus/"))
+#     node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
+#     node.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/zhenyus/"))
     pass
 
 # Print the RSpec to the enclosing page.
