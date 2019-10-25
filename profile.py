@@ -44,7 +44,7 @@ pc.defineParameter("osImage", "Select OS image",
 
 pc.defineParameter("DATASET", "URN of your dataset dataset", 
                    portal.ParameterType.STRING,
-                   "urn:publicid:IDN+clemson.cloudlab.us:cops-pg0+stdataset+lrb-3")
+                   "urn:publicid:IDN+emulab.net:cops+stdataset+lrb-256-3")
 
 # Always need this when using parameters
 params = pc.bindParameters()
@@ -79,7 +79,7 @@ dslink.link_multiplexing = True
 # The NFS clients, also attached to the NFS lan.
 for i in range(1, params.clientCount+1):
     node = request.RawPC("node%d" % i)
-#     node.hardware_type = "xl170"
+    node.hardware_type = "xl170"
     node.disk_image = params.osImage
     nfsLan.addInterface(node.addInterface())
     # Initialization script for the clients
