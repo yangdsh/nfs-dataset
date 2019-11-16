@@ -44,7 +44,7 @@ pc.defineParameter("osImage", "Select OS image",
 
 pc.defineParameter("DATASET", "URN of your dataset dataset", 
                    portal.ParameterType.STRING,
-                   "urn:publicid:IDN+clemson.cloudlab.us:cops-pg0+stdataset+lrb-clemson")
+                   "urn:publicid:IDN+clemson.cloudlab.us:cops-pg0+stdataset+lrb-clem")
 
 # Always need this when using parameters
 params = pc.bindParameters()
