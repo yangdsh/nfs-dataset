@@ -2,9 +2,9 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-export PATH=$PATH:/proj/cops-PG0/workspaces/audreyc/webcachesim/build/bin
+export PATH=$PATH:/proj/cops-PG0/workspaces/audreyc/webcachesim-3/webcachesim/build/bin
 export WEBCACHESIM_TRACE_DIR=/nfs
-export WEBCACHESIM_ROOT=/proj/cops-PG0/workspaces/audreyc/webcachesim
+export WEBCACHESIM_ROOT=/proj/cops-PG0/workspaces/audreyc/webcachesim-3/webcachesim
 
 # If not running interactively, don't do anything
 case $- in
