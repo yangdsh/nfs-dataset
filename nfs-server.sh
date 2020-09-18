@@ -161,6 +161,9 @@ else
     /etc/rc.d/lockd onestart
 fi
 
+echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
+echo "UserKnownHostsFile=/dev/null" >> /etc/ssh/ssh_config
+
 # Give it time to start-up
 sleep 5
 
