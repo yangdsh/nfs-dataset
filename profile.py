@@ -63,6 +63,7 @@ nfsServer.disk_image = params.osImage
 nfsLan.addInterface(nfsServer.addInterface())
 # Initialization script for the server
 nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-server.sh"))
+nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/echo ServerAliveInterval 60 >> /users/yangdsh/.ssh/config))
 
 # Special node that represents the ISCSI device where the dataset resides
 dsnode = request.RemoteBlockstore("dsnode", nfsDirectory)
@@ -86,7 +87,8 @@ for i in range(1, params.clientCount+1):
     # Initialization script for the clients
     node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/yangdsh/"))
-    node.addService(pg.Execute(shell="sh", command="sudo /bin/cat /local/repository/id_rsa.pub >> ~/.ssh/authorized_keys"))
+    node.addService(pg.Execute(shell="sh", command="sudo /bin/cat /local/repository/id_rsa.pub >> /users/yangdsh/.ssh/authorized_keys"))
+    node.addService(pg.Execute(shell="sh", command="sudo /bin/echo ServerAliveInterval 60 >> /users/yangdsh/.ssh/config))
     pass
 
 # Print the RSpec to the enclosing page.
