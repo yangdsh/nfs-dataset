@@ -22,7 +22,8 @@ request = pc.makeRequestRSpec()
 
 # Only Ubuntu images supported.
 imageList = [
-    ('urn:publicid:IDN+clemson.cloudlab.us+image+cops-PG0:lrb-clemson', 'WEBCACHESIM_SNAPSHOT'),
+    ('urn:publicid:IDN+clemson.cloudlab.us+image+cops-PG0:lrb-clemson', 'WEBCACHESIM_OLD_SNAPSHOT'),
+    ('urn:publicid:IDN+clemson.cloudlab.us+image+cops-PG0:lrb_omr.node1', 'WEBCACHESIM_SNAPSHOT'),
     ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU18-64-STD', 'UBUNTU 18.04'),
     ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU16-64-STD', 'UBUNTU 16.04'),
     ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU14-64-STD', 'UBUNTU 14.04'),
@@ -85,6 +86,7 @@ for i in range(1, params.clientCount+1):
     # Initialization script for the clients
     node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/yangdsh/"))
+    node.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/id_rsa.pub ~/.ssh/authorized_keys))
     pass
 
 # Print the RSpec to the enclosing page.
