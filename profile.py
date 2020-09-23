@@ -43,9 +43,13 @@ pc.defineParameter("osImage", "Select OS image",
                    portal.ParameterType.IMAGE,
                    imageList[0], imageList)
 
-pc.defineParameter("DATASET", "URN of your dataset dataset", 
+pc.defineParameter("DATASET", "URN of your dataset", 
                    portal.ParameterType.STRING,
                    "urn:publicid:IDN+clemson.cloudlab.us:cops-pg0+ltdataset+lrb-256-6")
+
+pc.defineParameter("DATASET2", "URN of your dataset2", 
+                   portal.ParameterType.STRING,
+                   "urn:publicid:IDN+clemson.cloudlab.us:lrbplus-pg0+ltdataset+wiki_trace")
 
 # Always need this when using parameters
 params = pc.bindParameters()
@@ -66,9 +70,13 @@ nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repos
 nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/echo ServerAliveInterval 60 >> /users/yangdsh/.ssh/config))
 
 # Special node that represents the ISCSI device where the dataset resides
-dsnode = request.RemoteBlockstore("dsnode", nfsDirectory)
+dsnode = request.RemoteBlockstore("dsnode", "nsf_old")
 dsnode.dataset = params.DATASET
 
+# Special node that represents the ISCSI device where the dataset resides
+dsnode2 = request.RemoteBlockstore("dsnode2", nfsDirectory)
+dsnode2.dataset = params.DATASET2
+                                
 # Link between the nfsServer and the ISCSI device that holds the dataset
 dslink = request.Link("dslink")
 dslink.addInterface(dsnode.interface)
@@ -77,6 +85,15 @@ dslink.addInterface(nfsServer.addInterface())
 dslink.best_effort = True
 dslink.vlan_tagging = True
 dslink.link_multiplexing = True
+
+# Link between the nfsServer and the ISCSI device that holds the dataset
+dslink2 = request.Link("dslink2")
+dslink2.addInterface(dsnode2.interface)
+dslink2.addInterface(nfsServer.addInterface())
+# Special attributes for this link that we must use.
+dslink2.best_effort = True
+dslink2.vlan_tagging = True
+dslink2.link_multiplexing = True
 
 # The NFS clients, also attached to the NFS lan.
 for i in range(1, params.clientCount+1):
