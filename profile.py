@@ -67,7 +67,7 @@ nfsServer.disk_image = params.osImage
 nfsLan.addInterface(nfsServer.addInterface())
 # Initialization script for the server
 nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-server.sh"))
-nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/echo ServerAliveInterval 60 >> /users/yangdsh/.ssh/config))
+nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/echo ServerAliveInterval 60 >> /users/yangdsh/.ssh/config"))
 
 # Special node that represents the ISCSI device where the dataset resides
 dsnode = request.RemoteBlockstore("dsnode", "nsf_old")
