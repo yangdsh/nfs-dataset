@@ -105,7 +105,7 @@ for i in range(1, params.clientCount+1):
     node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/yangdsh/"))
     node.addService(pg.Execute(shell="sh", command="sudo /bin/cat /local/repository/id_rsa.pub >> /users/yangdsh/.ssh/authorized_keys"))
-    node.addService(pg.Execute(shell="sh", command="sudo /bin/echo ServerAliveInterval 60 >> /users/yangdsh/.ssh/config))
+    node.addService(pg.Execute(shell="sh", command="sudo /bin/echo ServerAliveInterval 60 >> /users/yangdsh/.ssh/config"))
     pass
 
 # Print the RSpec to the enclosing page.
