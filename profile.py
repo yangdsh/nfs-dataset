@@ -22,7 +22,6 @@ request = pc.makeRequestRSpec()
 
 # Only Ubuntu images supported.
 imageList = [
-    ('urn:publicid:IDN+clemson.cloudlab.us+image+cops-PG0:lrb-clemson', 'WEBCACHESIM_OLD_SNAPSHOT'),
     ('urn:publicid:IDN+clemson.cloudlab.us+image+cops-PG0:lrb_omr.nfs', 'WEBCACHESIM_SNAPSHOT'),
     ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU18-64-STD', 'UBUNTU 18.04'),
     ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU16-64-STD', 'UBUNTU 16.04'),
@@ -49,7 +48,7 @@ pc.defineParameter("DATASET", "URN of your dataset",
 
 pc.defineParameter("DATASET2", "URN of your dataset2", 
                    portal.ParameterType.STRING,
-                   "urn:publicid:IDN+clemson.cloudlab.us:lrbplus-pg0+ltdataset+wiki_trace")
+                   "urn:publicid:IDN+clemson.cloudlab.us:lrbplus-pg0+ltdataset+cacheDataset")
 
 # Always need this when using parameters
 params = pc.bindParameters()
@@ -70,7 +69,7 @@ nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repos
 nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/echo ServerAliveInterval 60 >> /users/yangdsh/.ssh/config"))
 
 # Special node that represents the ISCSI device where the dataset resides
-dsnode = request.RemoteBlockstore("dsnode", "nsf_old")
+dsnode = request.RemoteBlockstore("dsnode", "/nsf_old")
 dsnode.dataset = params.DATASET
 
 # Special node that represents the ISCSI device where the dataset resides
