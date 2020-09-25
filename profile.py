@@ -22,7 +22,7 @@ request = pc.makeRequestRSpec()
 
 # Only Ubuntu images supported.
 imageList = [
-    ('urn:publicid:IDN+clemson.cloudlab.us+image+cops-PG0:lrb_omr.nfs', 'WEBCACHESIM_SNAPSHOT'),
+    ('urn:publicid:IDN+clemson.cloudlab.us+image+cops-PG0:lrb_omr.main', 'WEBCACHESIM_SNAPSHOT'),
     ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU18-64-STD', 'UBUNTU 18.04'),
     ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU16-64-STD', 'UBUNTU 16.04'),
     ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU14-64-STD', 'UBUNTU 14.04'),
@@ -66,7 +66,6 @@ nfsServer.disk_image = params.osImage
 nfsLan.addInterface(nfsServer.addInterface())
 # Initialization script for the server
 nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-server.sh"))
-nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/echo ServerAliveInterval 60 >> /users/yangdsh/.ssh/config"))
 nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/yangdsh/"))
 
 # Special node that represents the ISCSI device where the dataset resides
@@ -105,8 +104,6 @@ for i in range(1, params.clientCount+1):
     # Initialization script for the clients
     node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/yangdsh/"))
-    node.addService(pg.Execute(shell="sh", command="sudo /bin/cat /local/repository/id_rsa.pub >> /users/yangdsh/.ssh/authorized_keys"))
-    node.addService(pg.Execute(shell="sh", command="sudo /bin/echo ServerAliveInterval 60 >> /users/yangdsh/.ssh/config"))
     pass
 
 # Print the RSpec to the enclosing page.
