@@ -22,11 +22,7 @@ request = pc.makeRequestRSpec()
 
 # Only Ubuntu images supported.
 imageList = [
-    ('urn:publicid:IDN+clemson.cloudlab.us+image+lrbplus-PG0:lrb_omr.main', 'WEBCACHESIM_SNAPSHOT'),
     ('urn:publicid:IDN+clemson.cloudlab.us+image+cops-PG0:webcachesim_ubuntu18', 'UBUNTU 18.04'),
-    ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU16-64-STD', 'UBUNTU 16.04'),
-    ('urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU14-64-STD', 'UBUNTU 14.04'),
-    ('urn:publicid:IDN+emulab.net+image+emulab-ops//CENTOS7-64-STD', 'CENTOS 7'),
 ]
 
 # Do not change these unless you change the setup scripts too.
@@ -48,7 +44,7 @@ pc.defineParameter("DATASET", "URN of your dataset",
 
 pc.defineParameter("DATASET2", "URN of your dataset2", 
                    portal.ParameterType.STRING,
-                   "urn:publicid:IDN+clemson.cloudlab.us:cops-pg0+ltdataset+lrb-256-6")
+                   "urn:publicid:IDN+clemson.cloudlab.us:cops-pg0+ltdataset+lrb-256-8")
 
 # Always need this when using parameters
 params = pc.bindParameters()
