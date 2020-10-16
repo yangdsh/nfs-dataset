@@ -81,6 +81,7 @@ if len(params.DATASET2) > 1:
     # Special node that represents the ISCSI device where the dataset resides
     dsnode2 = request.RemoteBlockstore("dsnode2", "/nfs2")
     dsnode2.dataset = params.DATASET2
+    dsnode2.readonly = True
 
     # Link between the nfsServer and the ISCSI device that holds the dataset
     dslink2 = request.Link("dslink2")
