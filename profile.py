@@ -79,7 +79,7 @@ dslink.link_multiplexing = True
 
 if len(params.DATASET2) > 1:
     # Special node that represents the ISCSI device where the dataset resides
-    dsnode2 = request.RemoteBlockstore("dsnode2", "/nfs2")
+    dsnode2 = request.RemoteBlockstore("dsnode2", "/nfs_backup")
     dsnode2.dataset = params.DATASET2
     dsnode2.readonly = True
 
