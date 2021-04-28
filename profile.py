@@ -23,6 +23,7 @@ request = pc.makeRequestRSpec()
 # Only Ubuntu images supported.
 imageList = [
     ('urn:publicid:IDN+clemson.cloudlab.us+image+cops-PG0:webcachesim_ubuntu18', 'UBUNTU 18.04'),
+    ('urn:publicid:IDN+clemson.cloudlab.us+image+lrbplus-PG0:ubuntu18-cachelib', 'UBUNTU 18.04 new')
 ]
 
 # Do not change these unless you change the setup scripts too.
@@ -41,10 +42,6 @@ pc.defineParameter("osImage", "Select OS image",
 pc.defineParameter("DATASET", "URN of your dataset", 
                    portal.ParameterType.STRING,
                    "urn:publicid:IDN+clemson.cloudlab.us:lrbplus-pg0+ltdataset+cacheDataset")
-
-pc.defineParameter("DATASET2", "URN of your dataset2", 
-                   portal.ParameterType.STRING,
-                   "urn:publicid:IDN+clemson.cloudlab.us:cops-pg0+ltdataset+lrb-256-8")
 
 # Always need this when using parameters
 params = pc.bindParameters()
@@ -76,21 +73,6 @@ dslink.addInterface(nfsServer.addInterface())
 dslink.best_effort = True
 dslink.vlan_tagging = True
 dslink.link_multiplexing = True
-
-if len(params.DATASET2) > 1:
-    # Special node that represents the ISCSI device where the dataset resides
-    dsnode2 = request.RemoteBlockstore("dsnode2", "/nfs_backup")
-    dsnode2.dataset = params.DATASET2
-    dsnode2.readonly = True
-
-    # Link between the nfsServer and the ISCSI device that holds the dataset
-    dslink2 = request.Link("dslink2")
-    dslink2.addInterface(dsnode2.interface)
-    dslink2.addInterface(nfsServer.addInterface())
-    # Special attributes for this link that we must use.
-    dslink2.best_effort = True
-    dslink2.vlan_tagging = True
-    dslink2.link_multiplexing = True
 
 # The NFS clients, also attached to the NFS lan.
 for i in range(1, params.clientCount+1):
