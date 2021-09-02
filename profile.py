@@ -22,6 +22,7 @@ request = pc.makeRequestRSpec()
 
 # Only Ubuntu images supported.
 imageList = [
+    ('urn:publicid:IDN+clemson.cloudlab.us+image+lrbplus-PG0:ubuntu18-ML-for-C%2B%2B', 'UBUNTU 18.04 ML'),
     ('urn:publicid:IDN+clemson.cloudlab.us+image+cops-PG0:webcachesim_ubuntu18', 'UBUNTU 18.04'),
     ('urn:publicid:IDN+clemson.cloudlab.us+image+lrbplus-PG0:ubuntu18-cachelib', 'UBUNTU 18.04 new')
 ]
