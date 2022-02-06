@@ -183,8 +183,8 @@ for i in range(params.nodeCount):
       # Initialization script for the clients
       node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
       node.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/yangdsh/"))
-      node.addService(pg.Execute(shell="sh", command="sudo cp /proj/lrbplus-PG0/workspaces/yangdsh/webcachesim/passwd /etc/passwd")
-      node.addService(pg.Execute(shell="sh", command="sudo cp /proj/lrbplus-PG0/workspaces/yangdsh/webcachesim/id_rsa /users/yangdsh/.ssh/")
+      node.addService(pg.Execute(shell="sh", command="sudo cp /proj/lrbplus-PG0/workspaces/yangdsh/webcachesim/passwd /etc/passwd"))
+      node.addService(pg.Execute(shell="sh", command="sudo cp /proj/lrbplus-PG0/workspaces/yangdsh/webcachesim/id_rsa /users/yangdsh/.ssh/"))
 
 # Print the RSpec to the enclosing page.
 pc.printRequestRSpec(request)
