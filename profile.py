@@ -109,20 +109,6 @@ params = pc.bindParameters()
 
 pc.verifyParameters()
 
-lans = []
-# Create link/lan.
-for j in range(params.numNetworkInterface):
-  if params.nodeCount > 1:
-      if params.nodeCount == 2:
-          lan = request.Link()
-      else:
-          lan = request.LAN()
-      if params.bestEffort:
-          lan.best_effort = True
-      elif params.linkSpeed > 0:
-          lan.bandwidth = params.linkSpeed
-      lans.append(lan)
-
 # Process nodes, adding to link or lan.
 for i in range(params.nodeCount):
     # Create a node and add it to the request
@@ -134,11 +120,6 @@ for i in range(params.nodeCount):
         node = request.RawPC(name)
     if params.osImage and params.osImage != "default":
         node.disk_image = params.osImage
-    # Add to lan
-    if params.nodeCount > 1:
-        for j in range(params.numNetworkInterface):
-          iface = node.addInterface("eth%d" % (j+1), pg.IPv4Address('192.168.%d.%d' % (j, i + 1),'255.255.255.0'))
-          lans[j].addInterface(iface)
     # Optional hardware type.
     if params.phystype != "":
         node.hardware_type = params.phystype
