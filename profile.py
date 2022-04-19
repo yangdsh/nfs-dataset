@@ -121,7 +121,7 @@ for i in range(params.nodeCount):
         node = request.RawPC(name)
         nodes.append(node)
     for j in range(i):
-        linkij = request.Link("link"+str(i)+str(j), (node, nodes[i]))
+        linkij = request.Link("link"+str(i)+str(j), (nodes[j], nodes[i]));
     if params.osImage and params.osImage != "default":
         node.disk_image = params.osImage
     # Optional hardware type.
