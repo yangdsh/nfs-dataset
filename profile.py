@@ -108,6 +108,7 @@ pc.defineParameter("DATASET", "URN of your dataset",
 params = pc.bindParameters()
 
 pc.verifyParameters()
+nodes = []
 
 # Process nodes, adding to link or lan.
 for i in range(params.nodeCount):
@@ -118,6 +119,9 @@ for i in range(params.nodeCount):
     else:
         name = "node" + str(i)
         node = request.RawPC(name)
+        nodes.append(node)
+    for j in range(i):
+        linkij = request.Link("link"+str(i)+str(j), (node, nodes[i]))
     if params.osImage and params.osImage != "default":
         node.disk_image = params.osImage
     # Optional hardware type.
@@ -166,6 +170,7 @@ for i in range(params.nodeCount):
       node.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/yangdsh/"))
       node.addService(pg.Execute(shell="sh", command="sudo cp /proj/lrbplus-PG0/workspaces/yangdsh/webcachesim/passwd /etc/passwd"))
       node.addService(pg.Execute(shell="sh", command="sudo cp /proj/lrbplus-PG0/workspaces/yangdsh/webcachesim/id_rsa /users/yangdsh/.ssh/"))
+      node.addService(pg.Execute(shell="sh", command="sudo chown yangdsh /users/yangdsh/.ssh/id_rsa"))
 
 # Print the RSpec to the enclosing page.
 pc.printRequestRSpec(request)
