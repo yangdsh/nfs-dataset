@@ -126,6 +126,9 @@ for i in range(params.nodeCount):
         link0i = request.Link("link0"+str(i))
         link0i.addInterface(iface0)
         link0i.addInterface(ifacei)
+        link0i.best_effort = True
+        link0i.vlan_tagging = True
+        link0i.link_multiplexing = True
     if params.osImage and params.osImage != "default":
         node.disk_image = params.osImage
     # Optional hardware type.
