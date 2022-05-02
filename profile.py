@@ -171,6 +171,6 @@ for i in range(params.nodeCount):
       node.addService(pg.Execute(shell="sh", command="sudo cp /proj/lrbplus-PG0/workspaces/yangdsh/webcachesim/id_rsa /users/yangdsh/.ssh/"))
       node.addService(pg.Execute(shell="sh", command="sudo chown yangdsh /users/yangdsh/.ssh/id_rsa"))
 
-link1 = request.Link(members = [nodes[0],nodes[1])
+link1 = request.Link(members = [nodes[0],nodes[1]])
 # Print the RSpec to the enclosing page.
 pc.printRequestRSpec(request)
