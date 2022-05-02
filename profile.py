@@ -153,7 +153,7 @@ for i in range(params.nodeCount):
             bs.size = str(params.tempFileSystemSize) + "GB"
         bs.placement = "any"
     # Link between the nfsServer and the ISCSI device that holds the dataset
-    if params.DATASET != "" and False:
+    if params.DATASET != "":
       # We need a link to talk to the remote file system, so make an interface.
       iface = node.addInterface()
 
