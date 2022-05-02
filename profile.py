@@ -110,8 +110,6 @@ params = pc.bindParameters()
 pc.verifyParameters()
 nodes = []
 
-linklan = request.LAN("lan")
-
 # Process nodes, adding to link or lan.
 for i in range(params.nodeCount):
     # Create a node and add it to the request
@@ -123,10 +121,6 @@ for i in range(params.nodeCount):
         node = request.RawPC(name)
         nodes.append(node)
 
-    ifacei = nodes[i].addInterface('if' + str(i))
-    ifacei.component_id = "eth" + str(i)
-    linklan.addInterface(ifacei)
-    linklan.best_effort = True
     if params.osImage and params.osImage != "default":
         node.disk_image = params.osImage
     # Optional hardware type.
@@ -177,5 +171,6 @@ for i in range(params.nodeCount):
       node.addService(pg.Execute(shell="sh", command="sudo cp /proj/lrbplus-PG0/workspaces/yangdsh/webcachesim/id_rsa /users/yangdsh/.ssh/"))
       node.addService(pg.Execute(shell="sh", command="sudo chown yangdsh /users/yangdsh/.ssh/id_rsa"))
 
+link1 = request.Link(members = [nodes[0],nodes[1])
 # Print the RSpec to the enclosing page.
 pc.printRequestRSpec(request)
