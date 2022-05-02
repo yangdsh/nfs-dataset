@@ -22,7 +22,7 @@ pc = portal.Context()
 request = pc.makeRequestRSpec()
 
 # Variable number of nodes.
-pc.defineParameter("nodeCount", "Number of Nodes", portal.ParameterType.INTEGER, 1,
+pc.defineParameter("nodeCount", "Number of Nodes", portal.ParameterType.INTEGER, 2,
                    longDescription="If you specify more then one node, " +
                    "we will create a lan for you.")
 
@@ -32,7 +32,7 @@ pc.defineParameter("osImage", "Select OS image",
 
 # Optional physical type for all nodes.
 pc.defineParameter("phystype",  "Optional physical node type",
-                   portal.ParameterType.STRING, "c6525-100g",
+                   portal.ParameterType.STRING, "c6320",
                    longDescription="Specify a physical node type (pc3000,d710,etc) " +
                    "instead of letting the resource mapper choose for you.")
 
@@ -141,7 +141,7 @@ for i in range(params.nodeCount):
             bs.size = str(params.tempFileSystemSize) + "GB"
         bs.placement = "any"
     # Link between the nfsServer and the ISCSI device that holds the dataset
-    if params.DATASET != "":
+    if params.DATASET != "" and False:
       # We need a link to talk to the remote file system, so make an interface.
       iface = node.addInterface()
 
