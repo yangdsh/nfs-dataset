@@ -32,7 +32,7 @@ pc.defineParameter("osImage", "Select OS image",
 
 # Optional physical type for all nodes.
 pc.defineParameter("phystype",  "Optional physical node type",
-                   portal.ParameterType.STRING, "c6320",
+                   portal.ParameterType.STRING, "c6525-100g",
                    longDescription="Specify a physical node type (pc3000,d710,etc) " +
                    "instead of letting the resource mapper choose for you.")
 
@@ -98,7 +98,7 @@ imageList = [
 
 pc.defineParameter("osImage", "Select OS image",
                    portal.ParameterType.IMAGE,
-                   "urn:publicid:IDN+clemson.cloudlab.us+image+lrbplus-PG0:20220104")
+                   "urn:publicid:IDN+utah.cloudlab.us+image+lrbplus-PG0:cachelib-http")
 
 pc.defineParameter("DATASET", "URN of your dataset", 
                    portal.ParameterType.STRING,
