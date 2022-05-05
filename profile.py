@@ -22,7 +22,7 @@ pc = portal.Context()
 request = pc.makeRequestRSpec()
 
 # Variable number of nodes.
-pc.defineParameter("nodeCount", "Number of Nodes", portal.ParameterType.INTEGER, 1,
+pc.defineParameter("nodeCount", "Number of Nodes", portal.ParameterType.INTEGER, 2,
                    longDescription="If you specify more then one node, " +
                    "we will create a lan for you.")
 
@@ -98,17 +98,31 @@ imageList = [
 
 pc.defineParameter("osImage", "Select OS image",
                    portal.ParameterType.IMAGE,
-                   "urn:publicid:IDN+clemson.cloudlab.us+image+lrbplus-PG0:20220104")
+                   "urn:publicid:IDN+utah.cloudlab.us+image+lrbplus-PG0:cachelib-http")
 
 pc.defineParameter("DATASET", "URN of your dataset", 
                    portal.ParameterType.STRING,
-                   "urn:publicid:IDN+clemson.cloudlab.us:lrbplus-pg0+ltdataset+cacheDataset")
+                   "urn:publicid:IDN+utah.cloudlab.us:lrbplus-pg0+ltdataset+cache_traces")
 
 # Always need this when using parameters
 params = pc.bindParameters()
 
 pc.verifyParameters()
 nodes = []
+
+lans = []
+# Create link/lan.
+for j in range(params.numNetworkInterface):
+  if params.nodeCount > 1:
+      if params.nodeCount == 2:
+          lan = request.Link()
+      else:
+          lan = request.LAN()
+      # if params.bestEffort:
+      #     lan.best_effort = True
+      # elif params.linkSpeed > 0:
+      #     lan.bandwidth = params.linkSpeed
+      lans.append(lan)
 
 # Process nodes, adding to link or lan.
 for i in range(params.nodeCount):
@@ -120,17 +134,13 @@ for i in range(params.nodeCount):
         name = "node" + str(i)
         node = request.RawPC(name)
         nodes.append(node)
-    if i != 0:
-        iface0 = nodes[0].addInterface()
-        ifacei = nodes[i].addInterface()
-        link0i = request.Link("link0"+str(i))
-        link0i.addInterface(iface0)
-        link0i.addInterface(ifacei)
-        link0i.best_effort = True
-        link0i.vlan_tagging = True
-        link0i.link_multiplexing = True
+
     if params.osImage and params.osImage != "default":
         node.disk_image = params.osImage
+    if params.nodeCount > 1:
+        for j in range(params.numNetworkInterface):
+          iface = node.addInterface("eth%d" % (j+1), pg.IPv4Address('192.168.%d.%d' % (j, i + 1),'255.255.255.0'))
+          lans[j].addInterface(iface)
     # Optional hardware type.
     if params.phystype != "":
         node.hardware_type = params.phystype
