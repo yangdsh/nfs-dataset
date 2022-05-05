@@ -52,7 +52,7 @@ pc.defineParameter("useVMs",  "Use XEN VMs",
 
 # Optional link speed, normally the resource mapper will choose for you based on node availability
 pc.defineParameter("linkSpeed", "Link Speed",portal.ParameterType.INTEGER, 0,
-                   [(0,"Any"),(100000,"100Mb/s"),(1000000,"1Gb/s"),(10000000,"10Gb/s"),(25000000,"25Gb/s")],
+                   [(0,"Any"),(100000,"100Mb/s"),(1000000,"1Gb/s"),(10000000,"10Gb/s"),(25000000,"25Gb/s"),(100000000,"100Gb/s")],
                    longDescription="A specific link speed to use for your lan. Normally the resource " +
                    "mapper will choose for you based on node availability and the optional physical type.")
                    
