@@ -98,7 +98,7 @@ imageList = [
 
 pc.defineParameter("osImage", "Select OS image",
                    portal.ParameterType.IMAGE,
-                   "urn:publicid:IDN+utah.cloudlab.us+image+lrbplus-PG0:cachelib-http")
+                   "urn:publicid:IDN+clemson.cloudlab.us+image+lrbplus-PG0:cachelib_new")
 
 pc.defineParameter("DATASET", "URN of your dataset", 
                    portal.ParameterType.STRING,
