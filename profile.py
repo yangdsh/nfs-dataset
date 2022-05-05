@@ -120,8 +120,8 @@ for j in range(params.numNetworkInterface):
           lan = request.LAN()
       # if params.bestEffort:
       #     lan.best_effort = True
-      # elif params.linkSpeed > 0:
-      #     lan.bandwidth = params.linkSpeed
+      if params.linkSpeed > 0:
+          lan.bandwidth = params.linkSpeed
       lans.append(lan)
 
 # Process nodes, adding to link or lan.
