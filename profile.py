@@ -13,7 +13,7 @@ request = pc.makeRequestRSpec()
 
 # Only Ubuntu images supported.
 imageList = [
-    ('urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:lrb', 'UBUNTU 18.04'),
+    ('urn:publicid:IDN+utah.cloudlab.us+image+lrbplus-PG0:cachelib-http', 'UBUNTU 18.04'),
 ]
 
 # Do not change these unless you change the setup scripts too.
@@ -24,6 +24,11 @@ nfsDirectory  = "/nfs"
 # Number of NFS clients (there is always a server)
 pc.defineParameter("clientCount", "Number of NFS clients",
                    portal.ParameterType.INTEGER, 2)
+
+pc.defineParameter("phystype",  "Optional physical node type",
+                   portal.ParameterType.STRING, "c6525-25g",
+                   longDescription="Specify a physical node type (pc3000,d710,etc) " +
+                   "instead of letting the resource mapper choose for you.")
 
 pc.defineParameter("osImage", "Select OS image",
                    portal.ParameterType.IMAGE,
@@ -49,6 +54,7 @@ nfsLan.link_multiplexing = True
 # The NFS server.
 nfsServer = request.RawPC(nfsServerName)
 nfsServer.disk_image = params.osImage
+nfsServer.hardware_type = params.phystype
 # Attach server to lan.
 nfsLan.addInterface(nfsServer.addInterface())
 # Initialization script for the server
@@ -86,7 +92,7 @@ if len(params.DATASET2) > 1:
 # The NFS clients, also attached to the NFS lan.
 for i in range(1, params.clientCount+1):
     node = request.RawPC("node%d" % i)
-#    node.hardware_type = "d710"
+    node.hardware_type = params.phystype
     node.disk_image = params.osImage
     nfsLan.addInterface(node.addInterface())
     # Initialization script for the clients
