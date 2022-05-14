@@ -51,15 +51,22 @@ nfsLan.best_effort       = True
 nfsLan.vlan_tagging      = True
 nfsLan.link_multiplexing = True
 
+cachelan = request.LAN('cacheLan')
+
 # The NFS server.
 nfsServer = request.RawPC(nfsServerName)
 nfsServer.disk_image = params.osImage
 nfsServer.hardware_type = params.phystype
 # Attach server to lan.
 nfsLan.addInterface(nfsServer.addInterface())
+
+iface = nfsServer.addInterface("eth1", pg.IPv4Address('192.168.1.1','255.255.255.0'))
+cachelan.addInterface(iface)
 # Initialization script for the server
 nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-server.sh"))
 nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/yangdsh/"))
+nfsServer.addService(pg.Execute(shell="sh", command="sudo cp /proj/lrbplus-PG0/workspaces/yangdsh/id_rsa /users/yangdsh/.ssh/"))
+nfsServer.addService(pg.Execute(shell="sh", command="sudo chown yangdsh /users/yangdsh/.ssh/id_rsa"))
 
 # Special node that represents the ISCSI device where the dataset resides
 dsnode = request.RemoteBlockstore("dsnode", "/nfs")
@@ -95,9 +102,13 @@ for i in range(1, params.clientCount+1):
     node.hardware_type = params.phystype
     node.disk_image = params.osImage
     nfsLan.addInterface(node.addInterface())
+    iface = nfsServer.addInterface("eth1", pg.IPv4Address('192.168.1.%d' % i+1,'255.255.255.0'))
+    cachelan.addInterface(iface)
     # Initialization script for the clients
     node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/yangdsh/"))
+    nfsServer.addService(pg.Execute(shell="sh", command="sudo cp /proj/lrbplus-PG0/workspaces/yangdsh/id_rsa /users/yangdsh/.ssh/"))
+    nfsServer.addService(pg.Execute(shell="sh", command="sudo chown yangdsh /users/yangdsh/.ssh/id_rsa"))
     pass
 
 # Print the RSpec to the enclosing page.
