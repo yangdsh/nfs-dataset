@@ -129,7 +129,7 @@ nfsLan.best_effort       = True
 nfsLan.vlan_tagging      = True
 nfsLan.link_multiplexing = True
 
-nfsServer = request.RawPC(nfsServerName)
+nfsServer = request.RawPC('node0')
 nfsServer.disk_image = params.osImage
 # Attach server to lan.
 nfsLan.addInterface(nfsServer.addInterface())
