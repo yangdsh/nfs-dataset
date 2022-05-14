@@ -172,7 +172,7 @@ for i in range(params.nodeCount):
       # Currently, rwclones are "ephemeral" in that any changes made are
       # lost when the experiment mapping the clone is terminated.
       if (i > 0) or (not params.firstNodeRWDataset):
-        fsnode.rwclone = True
+        fsnode.readonly = True
 
       # Now we add the link between the node and the special node
       fslink = request.Link("fslink" + str(i))
