@@ -124,8 +124,41 @@ for j in range(params.numNetworkInterface):
       #     lan.bandwidth = params.linkSpeed
       lans.append(lan)
 
+nfsLan = request.LAN(nfsLanName)
+nfsLan.best_effort       = True
+nfsLan.vlan_tagging      = True
+nfsLan.link_multiplexing = True
+
+nfsServer = request.RawPC(nfsServerName)
+nfsServer.disk_image = params.osImage
+# Attach server to lan.
+nfsLan.addInterface(nfsServer.addInterface())
+dslink = request.Link("dslink")
+dslink.addInterface(dsnode.interface)
+dslink.addInterface(nfsServer.addInterface())
+# Special attributes for this link that we must use.
+dslink.best_effort = True
+dslink.vlan_tagging = True
+dslink.link_multiplexing = True
+if params.nodeCount > 1:
+    for j in range(params.numNetworkInterface):
+      iface = nfsServer.addInterface("eth%d" % (j+1), pg.IPv4Address('192.168.%d.%d' % (j, 1),'255.255.255.0'))
+      lans[j].addInterface(iface)
+# Optional hardware type.
+if params.phystype != "":
+    nfsServer.hardware_type = params.phystype
+# Initialization script for the server
+nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-server.sh"))
+nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/yangdsh/"))
+nfsServer.addService(pg.Execute(shell="sh", command="sudo cp /proj/lrbplus-PG0/workspaces/yangdsh/webcachesim/passwd /etc/passwd"))
+nfsServer.addService(pg.Execute(shell="sh", command="sudo cp /proj/lrbplus-PG0/workspaces/yangdsh/id_rsa /users/yangdsh/.ssh/"))
+nfsServer.addService(pg.Execute(shell="sh", command="sudo chown yangdsh /users/yangdsh/.ssh/id_rsa"))
+
+
 # Process nodes, adding to link or lan.
 for i in range(params.nodeCount):
+    if i == 0:
+      continue
     # Create a node and add it to the request
     if params.useVMs:
         name = "vm" + str(i)
@@ -144,50 +177,13 @@ for i in range(params.nodeCount):
     # Optional hardware type.
     if params.phystype != "":
         node.hardware_type = params.phystype
-    # Optional Blockstore
-    if params.tempFileSystemSize > 0 or params.tempFileSystemMax:
-        bs = node.Blockstore(name + "-bs", params.tempFileSystemMount)
-        if params.tempFileSystemMax:
-            bs.size = "0GB"
-        else:
-            bs.size = str(params.tempFileSystemSize) + "GB"
-        bs.placement = "any"
-    # Link between the nfsServer and the ISCSI device that holds the dataset
-    if params.DATASET != "":
-      # We need a link to talk to the remote file system, so make an interface.
-      iface = node.addInterface()
-
-      # The remote file system is represented by special node.
-      fsnode = request.RemoteBlockstore("fsnode" + str(i), "/nfs")
-      # This URN is displayed in the web interfaace for your dataset.
-      fsnode.dataset = params.DATASET
-      #
-      # The "rwclone" attribute allows you to map a writable copy of the
-      # indicated SAN-based dataset. In this way, multiple nodes can map
-      # the same dataset simultaneously. In many situations, this is more
-      # useful than a "readonly" mapping. For example, a dataset
-      # containing a Linux source tree could be mapped into multiple
-      # nodes, each of which could do its own independent,
-      # non-conflicting configure and build in their respective copies.
-      # Currently, rwclones are "ephemeral" in that any changes made are
-      # lost when the experiment mapping the clone is terminated.
-      if (i > 0) or (not params.firstNodeRWDataset):
-        fsnode.readonly = True
-
-      # Now we add the link between the node and the special node
-      fslink = request.Link("fslink" + str(i))
-      fslink.addInterface(iface)
-      fslink.addInterface(fsnode.interface)
-      
-      # Special attributes for this link that we must use.
-      fslink.best_effort = True
-      fslink.vlan_tagging = True
-      # Initialization script for the clients
-      node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
-      node.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/yangdsh/"))
-      node.addService(pg.Execute(shell="sh", command="sudo cp /proj/lrbplus-PG0/workspaces/yangdsh/webcachesim/passwd /etc/passwd"))
-      node.addService(pg.Execute(shell="sh", command="sudo cp /proj/lrbplus-PG0/workspaces/yangdsh/webcachesim/id_rsa /users/yangdsh/.ssh/"))
-      node.addService(pg.Execute(shell="sh", command="sudo chown yangdsh /users/yangdsh/.ssh/id_rsa"))
+    nfsLan.addInterface(node.addInterface())
+    # Initialization script for the clients
+    node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
+    node.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/yangdsh/"))
+    node.addService(pg.Execute(shell="sh", command="sudo cp /proj/lrbplus-PG0/workspaces/yangdsh/webcachesim/passwd /etc/passwd"))
+    node.addService(pg.Execute(shell="sh", command="sudo cp /proj/lrbplus-PG0/workspaces/yangdsh/id_rsa /users/yangdsh/.ssh/"))
+    node.addService(pg.Execute(shell="sh", command="sudo chown yangdsh /users/yangdsh/.ssh/id_rsa"))
 
 # Print the RSpec to the enclosing page.
 pc.printRequestRSpec(request)
