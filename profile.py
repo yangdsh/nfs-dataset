@@ -77,7 +77,7 @@ for i in range(1, params.clientCount+1):
     node = request.RawPC("node%d" % i)
     node.hardware_type = params.phystype
     node.disk_image = params.osImage
-    bs = node.Blockstore("bs", "/nfs")
+    bs = node.Blockstore("bs"+str(i), "/nfs")
     bs.size = "200GB"
     iface = node.addInterface("eth2", pg.IPv4Address('192.168.1.%d' % (i+1),'255.255.255.0'))
     cachelan.addInterface(iface)
