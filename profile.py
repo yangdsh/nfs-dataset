@@ -45,25 +45,16 @@ pc.defineParameter("DATASET2", "URN of your dataset2",
 # Always need this when using parameters
 params = pc.bindParameters()
 
-# The NFS network. All these options are required.
-nfsLan = request.LAN(nfsLanName)
-nfsLan.best_effort       = True
-nfsLan.vlan_tagging      = True
-nfsLan.link_multiplexing = True
-
 cachelan = request.LAN('cacheLan')
 
 # The NFS server.
 nfsServer = request.RawPC(nfsServerName)
 nfsServer.disk_image = params.osImage
 nfsServer.hardware_type = params.phystype
-# Attach server to lan.
-nfsLan.addInterface(nfsServer.addInterface())
 
 iface = nfsServer.addInterface("eth2", pg.IPv4Address('192.168.1.1','255.255.255.0'))
 cachelan.addInterface(iface)
 # Initialization script for the server
-nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-server.sh"))
 nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/yangdsh/"))
 nfsServer.addService(pg.Execute(shell="sh", command="sudo cp /proj/lrbplus-PG0/workspaces/yangdsh/id_rsa /users/yangdsh/.ssh/"))
 nfsServer.addService(pg.Execute(shell="sh", command="sudo chown yangdsh /users/yangdsh/.ssh/id_rsa"))
@@ -86,14 +77,14 @@ for i in range(1, params.clientCount+1):
     node = request.RawPC("node%d" % i)
     node.hardware_type = params.phystype
     node.disk_image = params.osImage
-    nfsLan.addInterface(node.addInterface())
+    bs = node.Blockstore("bs", "/nfs")
+    bs.size = "200GB"
     iface = node.addInterface("eth2", pg.IPv4Address('192.168.1.%d' % (i+1),'255.255.255.0'))
     cachelan.addInterface(iface)
     # Initialization script for the clients
-    node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
     node.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/yangdsh/"))
-    nfsServer.addService(pg.Execute(shell="sh", command="sudo cp /proj/lrbplus-PG0/workspaces/yangdsh/id_rsa /users/yangdsh/.ssh/"))
-    nfsServer.addService(pg.Execute(shell="sh", command="sudo chown yangdsh /users/yangdsh/.ssh/id_rsa"))
+    node.addService(pg.Execute(shell="sh", command="sudo cp /proj/lrbplus-PG0/workspaces/yangdsh/id_rsa /users/yangdsh/.ssh/"))
+    node.addService(pg.Execute(shell="sh", command="sudo chown yangdsh /users/yangdsh/.ssh/id_rsa"))
     pass
 
 # Print the RSpec to the enclosing page.
