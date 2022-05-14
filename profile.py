@@ -133,6 +133,9 @@ nfsServer = request.RawPC('node0')
 nfsServer.disk_image = params.osImage
 # Attach server to lan.
 nfsLan.addInterface(nfsServer.addInterface())
+
+dsnode = request.RemoteBlockstore("dsnode", "/nfs")
+dsnode.dataset = params.DATASET
 dslink = request.Link("dslink")
 dslink.addInterface(dsnode.interface)
 dslink.addInterface(nfsServer.addInterface())
