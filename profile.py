@@ -60,7 +60,7 @@ nfsServer.hardware_type = params.phystype
 # Attach server to lan.
 nfsLan.addInterface(nfsServer.addInterface())
 
-iface = nfsServer.addInterface("eth1", pg.IPv4Address('192.168.1.1','255.255.255.0'))
+iface = nfsServer.addInterface("eth2", pg.IPv4Address('192.168.1.1','255.255.255.0'))
 cachelan.addInterface(iface)
 # Initialization script for the server
 nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-server.sh"))
@@ -81,28 +81,13 @@ dslink.best_effort = True
 dslink.vlan_tagging = True
 dslink.link_multiplexing = True
 
-if len(params.DATASET2) > 1:
-    # Special node that represents the ISCSI device where the dataset resides
-    dsnode2 = request.RemoteBlockstore("dsnode2", "/nfs_backup")
-    dsnode2.dataset = params.DATASET2
-    dsnode2.readonly = True
-
-    # Link between the nfsServer and the ISCSI device that holds the dataset
-    dslink2 = request.Link("dslink2")
-    dslink2.addInterface(dsnode2.interface)
-    dslink2.addInterface(nfsServer.addInterface())
-    # Special attributes for this link that we must use.
-    dslink2.best_effort = True
-    dslink2.vlan_tagging = True
-    dslink2.link_multiplexing = True
-
 # The NFS clients, also attached to the NFS lan.
 for i in range(1, params.clientCount+1):
     node = request.RawPC("node%d" % i)
     node.hardware_type = params.phystype
     node.disk_image = params.osImage
     nfsLan.addInterface(node.addInterface())
-    iface = nfsServer.addInterface("eth1", pg.IPv4Address('192.168.1.%d' % (i+1),'255.255.255.0'))
+    iface = node.addInterface("eth2", pg.IPv4Address('192.168.1.%d' % (i+1),'255.255.255.0'))
     cachelan.addInterface(iface)
     # Initialization script for the clients
     node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
