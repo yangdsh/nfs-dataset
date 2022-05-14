@@ -102,7 +102,7 @@ for i in range(1, params.clientCount+1):
     node.hardware_type = params.phystype
     node.disk_image = params.osImage
     nfsLan.addInterface(node.addInterface())
-    iface = nfsServer.addInterface("eth1", pg.IPv4Address('192.168.1.%d' % i+1,'255.255.255.0'))
+    iface = nfsServer.addInterface("eth1", pg.IPv4Address('192.168.1.%d' % (i+1),'255.255.255.0'))
     cachelan.addInterface(iface)
     # Initialization script for the clients
     node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
