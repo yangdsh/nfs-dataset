@@ -114,10 +114,6 @@ cachelan2 = request.LAN('cacheLan2')
 
 # Process nodes, adding to link or lan.
 for i in range(params.nodeCount):
-    iface1 = node.addInterface("eth01", pg.IPv4Address('10.1.1.%d' % (i+1),'255.255.255.0'))
-    cachelan1.addInterface(iface1)
-    iface2 = node.addInterface("eth02", pg.IPv4Address('10.1.2.%d' % (i+1),'255.255.255.0'))
-    cachelan2.addInterface(iface2)
     # Create a node and add it to the request
     if params.useVMs:
         name = "vm" + str(i)
@@ -125,6 +121,10 @@ for i in range(params.nodeCount):
     else:
         name = "node" + str(i)
         node = request.RawPC(name)
+    iface1 = node.addInterface("eth01", pg.IPv4Address('10.1.1.%d' % (i+1),'255.255.255.0'))
+    cachelan1.addInterface(iface1)
+    iface2 = node.addInterface("eth02", pg.IPv4Address('10.1.2.%d' % (i+1),'255.255.255.0'))
+    cachelan2.addInterface(iface2)
     if params.osImage and params.osImage != "default":
         node.disk_image = params.osImage
     # Optional hardware type.
