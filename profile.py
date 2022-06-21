@@ -28,7 +28,7 @@ pc.defineParameter("nodeCount", "Number of Nodes", portal.ParameterType.INTEGER,
 
 pc.defineParameter("osImage", "Select OS image",
                    portal.ParameterType.STRING,
-                   "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU20-64-OSCN-U)
+                   "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU20-64-OSCN-U")
 
 # Optional physical type for all nodes.
 pc.defineParameter("phystype",  "Optional physical node type",
