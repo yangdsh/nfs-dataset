@@ -98,11 +98,11 @@ imageList = [
 
 pc.defineParameter("osImage", "Select OS image",
                    portal.ParameterType.IMAGE,
-                   "urn:publicid:IDN+clemson.cloudlab.us+image+lrbplus-PG0:20220104")
+                   "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU20-64-OSCN-U")
 
 pc.defineParameter("DATASET", "URN of your dataset", 
                    portal.ParameterType.STRING,
-                   "urn:publicid:IDN+clemson.cloudlab.us:lrbplus-pg0+ltdataset+cacheDataset")
+                   "urn:publicid:IDN+utah.cloudlab.us:lrbplus-pg0+ltdataset+cache_traces")
 
 # Always need this when using parameters
 params = pc.bindParameters()
