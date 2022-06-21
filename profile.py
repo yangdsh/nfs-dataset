@@ -28,18 +28,18 @@ pc.defineParameter("nodeCount", "Number of Nodes", portal.ParameterType.INTEGER,
 
 pc.defineParameter("osImage", "Select OS image",
                    portal.ParameterType.STRING,
-                   "urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:lrb")
+                   "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU20-64-OSCN-U)
 
 # Optional physical type for all nodes.
 pc.defineParameter("phystype",  "Optional physical node type",
-                   portal.ParameterType.STRING, "c6525-100g",
+                   portal.ParameterType.STRING, "c6525-25g",
                    longDescription="Specify a physical node type (pc3000,d710,etc) " +
                    "instead of letting the resource mapper choose for you.")
 
 # remote dataset
 pc.defineParameter("DATASET", "URN of your dataset dataset", 
                    portal.ParameterType.STRING,
-                   "urn:publicid:IDN+utah.cloudlab.us:cops-pg0+ltdataset+lrb")
+                   "urn:publicid:IDN+utah.cloudlab.us:lrbplus-pg0+ltdataset+cache_traces")
 
 pc.defineParameter("firstNodeRWDataset",  "Mount dataset in rw instead of rwclone on the first node",
                    portal.ParameterType.BOOLEAN, False)
