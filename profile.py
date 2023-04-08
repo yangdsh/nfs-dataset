@@ -68,7 +68,7 @@ nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/reposit
 # Special node that represents the ISCSI device where the dataset resides
 dsnode = request.RemoteBlockstore("dsnode", "/nfs")
 dsnode.dataset = params.DATASET
-# dsnode.rwclone = True
+dsnode.rwclone = True
 
 # Link between the nfsServer and the ISCSI device that holds the dataset
 dslink = request.Link("dslink")
