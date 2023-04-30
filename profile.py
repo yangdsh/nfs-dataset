@@ -59,7 +59,7 @@ nfsLan.link_multiplexing = True
 # The NFS server.
 nfsServer = request.RawPC(nfsServerName)
 nfsServer.disk_image = params.osImage
-bs = nfsServer.Blockstore("bs"+str(i), "/nfs2")
+bs = nfsServer.Blockstore("bs0", "/nfs2")
 bs.size = "400GB"
 # Attach server to lan.
 nfsLan.addInterface(nfsServer.addInterface())
