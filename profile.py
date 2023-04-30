@@ -56,24 +56,11 @@ nfsLan.best_effort       = True
 nfsLan.vlan_tagging      = True
 nfsLan.link_multiplexing = True
 
-# The NFS clients, also attached to the NFS lan.
-for i in range(1, params.clientCount+1):
-    node = request.RawPC("node%d" % i)
-    node.hardware_type = params.Hardware
-    node.disk_image = params.osImage
-    #bs = node.Blockstore("bs"+str(i), "/nfs2")
-    #bs.size = "400GB"
-    nfsLan.addInterface(node.addInterface())
-    # Initialization script for the clients
-    node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
-    node.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/yangdsh/"))
-    pass
-
 # The NFS server.
 nfsServer = request.RawPC(nfsServerName)
 nfsServer.disk_image = params.osImage
-#bs = nfsServer.Blockstore("bs0", "/nfs2")
-#bs.size = "400GB"
+bs = nfsServer.Blockstore("bs0", "/nfs2")
+bs.size = "400GB"
 # Attach server to lan.
 nfsLan.addInterface(nfsServer.addInterface())
 # Initialization script for the server
@@ -93,6 +80,19 @@ dslink.addInterface(nfsServer.addInterface())
 dslink.best_effort = True
 dslink.vlan_tagging = True
 dslink.link_multiplexing = True
+
+# The NFS clients, also attached to the NFS lan.
+for i in range(1, params.clientCount+1):
+    node = request.RawPC("node%d" % i)
+    node.hardware_type = params.Hardware
+    node.disk_image = params.osImage
+    #bs = node.Blockstore("bs"+str(i), "/nfs2")
+    #bs.size = "400GB"
+    nfsLan.addInterface(node.addInterface())
+    # Initialization script for the clients
+    node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
+    node.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/yangdsh/"))
+    pass
 
 # Print the RSpec to the enclosing page.
 pc.printRequestRSpec(request)
