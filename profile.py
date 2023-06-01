@@ -45,7 +45,11 @@ pc.defineParameter("DATASET", "URN of your dataset",
 
 pc.defineParameter("Hardware", "hardware", 
                    portal.ParameterType.STRING,
-                   "c6420")
+                   "c6525")
+
+pc.defineParameter("Hardware_nfs", "hardware_nfs", 
+                   portal.ParameterType.STRING,
+                   "c6320")
 
 # Always need this when using parameters
 params = pc.bindParameters()
@@ -58,6 +62,7 @@ nfsLan.link_multiplexing = True
 
 # The NFS server.
 nfsServer = request.RawPC(nfsServerName)
+nfsServer.hardware_type = params.Hardware_nfs
 nfsServer.disk_image = params.osImage
 bs = nfsServer.Blockstore("bs0", "/nfs2")
 bs.size = "400GB"
