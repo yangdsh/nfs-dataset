@@ -36,7 +36,7 @@ pc.defineParameter("clientCount", "Number of NFS clients",
                    portal.ParameterType.INTEGER, 2)
 
 pc.defineParameter("osImage", "Select OS image",
-                   portal.ParameterType.IMAGE,
+                   portal.ParameterType.STRING,
                    "urn:publicid:IDN+clemson.cloudlab.us+image+lrbplus-PG0:cachelib2023")
 
 pc.defineParameter("DATASET", "URN of your dataset", 
@@ -45,7 +45,7 @@ pc.defineParameter("DATASET", "URN of your dataset",
 
 pc.defineParameter("Hardware", "hardware", 
                    portal.ParameterType.STRING,
-                   "c6525")
+                   "r6525")
 
 pc.defineParameter("Hardware_nfs", "hardware_nfs", 
                    portal.ParameterType.STRING,
