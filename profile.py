@@ -65,7 +65,7 @@ nfsServer = request.RawPC(nfsServerName)
 nfsServer.hardware_type = params.Hardware_nfs
 nfsServer.disk_image = params.osImage
 bs = nfsServer.Blockstore("bs0", "/nfs2")
-bs.size = "400GB"
+bs.size = "50GB"
 # Attach server to lan.
 nfsLan.addInterface(nfsServer.addInterface())
 # Initialization script for the server
@@ -75,7 +75,7 @@ nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/reposit
 # Special node that represents the ISCSI device where the dataset resides
 dsnode = request.RemoteBlockstore("dsnode", "/nfs")
 dsnode.dataset = params.DATASET
-#dsnode.rwclone = True
+dsnode.rwclone = True
 
 # Link between the nfsServer and the ISCSI device that holds the dataset
 dslink = request.Link("dslink")
@@ -91,8 +91,8 @@ for i in range(1, params.clientCount+1):
     node = request.RawPC("node%d" % i)
     node.hardware_type = params.Hardware
     node.disk_image = params.osImage
-    #bs = node.Blockstore("bs"+str(i), "/nfs2")
-    #bs.size = "400GB"
+    bs = node.Blockstore("bs"+str(i), "/nfs2")
+    bs.size = "50GB"
     nfsLan.addInterface(node.addInterface())
     # Initialization script for the clients
     node.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-client.sh"))
