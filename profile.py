@@ -35,6 +35,9 @@ nfsDirectory  = "/nfs"
 pc.defineParameter("clientCount", "Number of NFS clients",
                    portal.ParameterType.INTEGER, 2)
 
+pc.defineParameter("rwclone", "Dataset clone mode flag",
+                   portal.ParameterType.INTEGER, 0)
+
 pc.defineParameter("osImage", "Select OS image",
                    portal.ParameterType.STRING,
                    "urn:publicid:IDN+clemson.cloudlab.us+image+lrbplus-PG0:cachelib2023")
@@ -75,7 +78,7 @@ nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/reposit
 # Special node that represents the ISCSI device where the dataset resides
 dsnode = request.RemoteBlockstore("dsnode", "/nfs")
 dsnode.dataset = params.DATASET
-dsnode.rwclone = True
+dsnode.rwclone = params.rwclone
 
 # Link between the nfsServer and the ISCSI device that holds the dataset
 dslink = request.Link("dslink")
