@@ -75,19 +75,20 @@ nfsLan.addInterface(nfsServer.addInterface())
 nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/bash /local/repository/nfs-server.sh"))
 nfsServer.addService(pg.Execute(shell="sh", command="sudo /bin/cp /local/repository/.bashrc /users/yangdsh/"))
 
-# Special node that represents the ISCSI device where the dataset resides
-dsnode = request.RemoteBlockstore("dsnode", "/nfs")
-dsnode.dataset = params.DATASET
-dsnode.rwclone = params.rwclone
-
-# Link between the nfsServer and the ISCSI device that holds the dataset
-dslink = request.Link("dslink")
-dslink.addInterface(dsnode.interface)
-dslink.addInterface(nfsServer.addInterface())
-# Special attributes for this link that we must use.
-dslink.best_effort = True
-dslink.vlan_tagging = True
-dslink.link_multiplexing = True
+if len(params.DATASET) > 1:
+    # Special node that represents the ISCSI device where the dataset resides
+    dsnode = request.RemoteBlockstore("dsnode", "/nfs")
+    dsnode.dataset = params.DATASET
+    dsnode.rwclone = params.rwclone
+    
+    # Link between the nfsServer and the ISCSI device that holds the dataset
+    dslink = request.Link("dslink")
+    dslink.addInterface(dsnode.interface)
+    dslink.addInterface(nfsServer.addInterface())
+    # Special attributes for this link that we must use.
+    dslink.best_effort = True
+    dslink.vlan_tagging = True
+    dslink.link_multiplexing = True
 
 # The NFS clients, also attached to the NFS lan.
 for i in range(1, params.clientCount+1):
